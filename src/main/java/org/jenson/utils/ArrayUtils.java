@@ -1,13 +1,12 @@
 package org.jenson.utils;
 
-import org.jenson.y2024.d06.Part2;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class ArrayUtils<T> {
 
@@ -220,6 +219,19 @@ public class ArrayUtils<T> {
             }
         }
         return toReturn;
+    }
+
+    public Stream<T> cells() {
+        return Stream.of(array).flatMap(Stream::of);
+    }
+
+    public void print() {
+        for (T[] ts : array) {
+            for (int j = 0; j < array[0].length; j++) {
+                System.out.print(ts[j]);
+            }
+            System.out.println();
+        }
     }
 
     public interface PositionAwareFactory<T> {
