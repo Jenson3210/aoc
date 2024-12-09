@@ -45,7 +45,7 @@ public class Reader {
     }
 
     public static IntStream readFileLineToInt(int year, int day) {
-        return readFileToText(year, day).chars();
+        return readFileLineByLineSeparatedToIntStream(year, day, "").findFirst().orElseGet(IntStream::empty);
     }
 
     private static String getFileName(int year, int day) {
