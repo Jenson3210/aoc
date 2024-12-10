@@ -2,6 +2,7 @@ package org.jenson.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -10,7 +11,7 @@ import java.util.stream.Stream;
 
 public class ArrayUtils<T> {
 
-    T [][] array;
+    T[][] array;
 
     public ArrayUtils(T[][] array) {
         this.array = array;
@@ -108,7 +109,7 @@ public class ArrayUtils<T> {
 
     public T northWest(int rowIndex, int colIndex) {
         if (rowIndex > 0 && colIndex > 0) {
-            return array[rowIndex - 1][colIndex -1];
+            return array[rowIndex - 1][colIndex - 1];
         }
         throw new IndexOutOfBoundsException();
     }
@@ -122,7 +123,7 @@ public class ArrayUtils<T> {
 
     public T southWest(int rowIndex, int colIndex) {
         if (rowIndex < array.length && colIndex > 0) {
-            return array[rowIndex + 1][colIndex -1];
+            return array[rowIndex + 1][colIndex - 1];
         }
         throw new IndexOutOfBoundsException();
     }
@@ -232,6 +233,15 @@ public class ArrayUtils<T> {
             }
             System.out.println();
         }
+    }
+
+    public List<T> nesw(int rowIndex, int colIndex) {
+        return Stream.of(
+                northOrNull(rowIndex, colIndex),
+                eastOrNull(rowIndex, colIndex),
+                southOrNull(rowIndex, colIndex),
+                westOrNull(rowIndex, colIndex)
+        ).filter(Objects::nonNull).toList();
     }
 
     public interface PositionAwareFactory<T> {
