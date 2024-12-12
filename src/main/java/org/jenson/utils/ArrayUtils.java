@@ -79,6 +79,38 @@ public class ArrayUtils<T> {
         return directionOrNull(rowIndex, colIndex, this::southWest);
     }
 
+    public T northOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, -1, 0, factory);
+    }
+
+    public T eastOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, 0, 1, factory);
+    }
+
+    public T southOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, 1, 0, factory);
+    }
+
+    public T westOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, 0, -1, factory);
+    }
+
+    public T northEastOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, -1, 1, factory);
+    }
+
+    public T northWestOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, -1, -1, factory);
+    }
+
+    public T southEastOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, 1, 1, factory);
+    }
+
+    public T southWestOr(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return directionOr(rowIndex, colIndex, 1, -1, factory);
+    }
+
     public T north(int rowIndex, int colIndex) {
         if (rowIndex > 0) {
             return array[rowIndex - 1][colIndex];
@@ -200,6 +232,14 @@ public class ArrayUtils<T> {
         }
     }
 
+    private T directionOr(int rowIndex, int colIndex, int rowIncrement, int colIncrement, PositionAwareFactory<T> factory) {
+        try {
+            return get(rowIndex + rowIncrement, colIndex + colIncrement);
+        } catch (IndexOutOfBoundsException ex) {
+            return factory.create(rowIndex + rowIncrement, colIndex + colIncrement, null);
+        }
+    }
+
     private List<T> allInDirection(int rowIndex, int colIndex, BiFunction<Integer, Integer, T> directionHelper, int rowIncrement, int seatIncrement) {
         List<T> toReturn = new ArrayList<>();
         T item;
@@ -242,6 +282,15 @@ public class ArrayUtils<T> {
                 southOrNull(rowIndex, colIndex),
                 westOrNull(rowIndex, colIndex)
         ).filter(Objects::nonNull).toList();
+    }
+
+    public List<T> neswGrowingOutsideMap(int rowIndex, int colIndex, PositionAwareFactory<T> factory) {
+        return Stream.of(
+                northOr(rowIndex, colIndex, factory),
+                eastOr(rowIndex, colIndex, factory),
+                southOr(rowIndex, colIndex, factory),
+                westOr(rowIndex, colIndex, factory)
+        ).toList();
     }
 
     public interface PositionAwareFactory<T> {
