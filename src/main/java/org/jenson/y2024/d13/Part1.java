@@ -10,7 +10,7 @@ import static org.jenson.utils.Printer.printDay;
 public class Part1 {
 
     public static void main(String[] args) {
-        printDay(12);
+        printDay(13);
 
         int totalCost = Reader.readFileLineByLineToText(2024, 13).gather(Gatherers.windowFixed(4)).map(machineInput -> {
             String aInput = machineInput.get(0);
