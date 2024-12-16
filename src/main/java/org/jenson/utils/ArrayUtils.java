@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class ArrayUtils<T> {
@@ -331,6 +332,24 @@ public class ArrayUtils<T> {
                 southOr(rowIndex, colIndex, factory),
                 westOr(rowIndex, colIndex, factory)
         ).toList();
+    }
+
+    public IntStream rowIndices() {
+        return IntStream.range(0, array.length);
+    }
+
+    public IntStream colIndices() {
+        return IntStream.range(0, array[0].length);
+    }
+
+    public List<Pair<Integer, Integer>> allCoordinates() {
+        List<Pair<Integer, Integer>> coordinates = new ArrayList<>();
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array[0].length; j++) {
+                coordinates.add(Pair.of(i, j));
+            }
+        }
+        return coordinates;
     }
 
     public interface PositionAwareFactory<T> {
