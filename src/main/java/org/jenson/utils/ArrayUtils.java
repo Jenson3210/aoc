@@ -167,6 +167,22 @@ public class ArrayUtils<T> {
         throw new IndexOutOfBoundsException();
     }
 
+    public List<T> allNorthWhile(int rowIndex, int colIndex, Predicate<T> condition) {
+        return allInDirectionWhile(rowIndex, colIndex, this::north, -1, 0, condition);
+    }
+
+    public List<T> allEastWhile(int rowIndex, int colIndex, Predicate<T> condition) {
+        return allInDirectionWhile(rowIndex, colIndex, this::east, 0, 1, condition);
+    }
+
+    public List<T> allSouthWhile(int rowIndex, int colIndex, Predicate<T> condition) {
+        return allInDirectionWhile(rowIndex, colIndex, this::south, 1, 0, condition);
+    }
+
+    public List<T> allWestWhile(int rowIndex, int colIndex, Predicate<T> condition) {
+        return allInDirectionWhile(rowIndex, colIndex, this::west, 0, -1, condition);
+    }
+
     public List<T> allNorth(int rowIndex, int colIndex) {
         return allInDirection(rowIndex, colIndex, this::north, -1, 0);
     }
@@ -238,6 +254,30 @@ public class ArrayUtils<T> {
         } catch (IndexOutOfBoundsException ex) {
             return factory.create(rowIndex + rowIncrement, colIndex + colIncrement, null);
         }
+    }
+
+    private List<T> allInDirectionWhile(int rowIndex, int colIndex, BiFunction<Integer, Integer, T> directionHelper, int rowIncrement, int seatIncrement, Predicate<T> condition) {
+        List<T> toReturn = new ArrayList<>();
+        T item;
+        boolean inGrid = true;
+        int row = rowIndex;
+        int seat = colIndex;
+
+        while (inGrid) {
+            try {
+                item = directionHelper.apply(row, seat);
+                if (item != null && condition.test(item)) {
+                    toReturn.add(item);
+                } else {
+                    inGrid = false;
+                }
+                row += rowIncrement;
+                seat += seatIncrement;
+            } catch (IndexOutOfBoundsException ex) {
+                inGrid = false;
+            }
+        }
+        return toReturn;
     }
 
     private List<T> allInDirection(int rowIndex, int colIndex, BiFunction<Integer, Integer, T> directionHelper, int rowIncrement, int seatIncrement) {
